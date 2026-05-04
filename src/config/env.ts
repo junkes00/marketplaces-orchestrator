@@ -1,11 +1,12 @@
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import type { MeliConfig } from '../types/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const envPath = join(__dirname, '../../.env');
 
-const env = {};
+const env: Record<string, string> = {};
 
 try {
   const envFile = readFileSync(envPath, 'utf-8');
@@ -19,7 +20,7 @@ try {
   console.warn('.env file not found. Using process.env instead.');
 }
 
-export const config = {
+export const config: MeliConfig = {
   clientId: process.env.MELI_CLIENT_ID || env.MELI_CLIENT_ID,
   clientSecret: process.env.MELI_CLIENT_SECRET || env.MELI_CLIENT_SECRET,
   redirectUri: process.env.MELI_REDIRECT_URI || env.MELI_REDIRECT_URI,
