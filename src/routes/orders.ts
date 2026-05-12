@@ -1,5 +1,5 @@
 import type { FastifyInstance } from 'fastify';
-import meli from '../services/meli.js';
+import meliOrder from '../services/meli/order.js';
 
 export default async function ordersRoutes(fastify: FastifyInstance) {
   fastify.get('/orders', async (request, reply) => {
@@ -17,7 +17,7 @@ export default async function ordersRoutes(fastify: FastifyInstance) {
     }
 
     try {
-      const orders = await meli.searchOrders(seller, token);
+      const orders = await meliOrder.searchOrders(seller, token);
 
       return {
         paging: orders.paging,
@@ -45,7 +45,7 @@ export default async function ordersRoutes(fastify: FastifyInstance) {
     }
 
     try {
-      const orders = await meli.searchOrders(seller, token);
+      const orders = await meliOrder.searchOrders(seller, token);
 
       return {
         total: orders.paging.total,

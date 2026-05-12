@@ -1,11 +1,11 @@
 import type { FastifyInstance } from 'fastify';
-import meli from '../services/meli.js';
+import meliAuth from '../services/meli/auth.js';
 import config from '../config/env.js';
 
 export default async function authRoutes(fastify: FastifyInstance) {
   fastify.get('/auth/url', async (request, reply) => {
     try {
-      const url = await meli.getAuthUrl();
+      const url = await meliAuth.getAuthUrl();
       return { authUrl: url };
     } catch (err: unknown) {
       const error = err as Error;
@@ -29,7 +29,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     }
 
     try {
-      const tokens = await meli.exchangeCodeForToken(code);
+      const tokens = await meliAuth.exchangeCodeForToken(code);
 
       const frontendUrl = new URL(config.frontendUrl);
       frontendUrl.searchParams.set('auth', 'success');
@@ -55,7 +55,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
         reply.code(400);
         return { error: 'userId is required' };
       }
-      const tokens = await meli.refreshToken(userId);
+      const tokens = await meliAuth.refreshToken(userId);
       return {
         message: 'Token refreshed successfully',
         expiresIn: tokens.expires_in
