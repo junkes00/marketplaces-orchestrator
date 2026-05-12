@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import authRoutes from './routes/auth.js';
 import ordersRoutes from './routes/orders.js';
+import usersRoutes from './routes/users.js';
 import config from './config/env.js';
 
 const fastify = Fastify({ logger: true });
@@ -23,6 +24,9 @@ fastify.get('/', async (request, reply) => {
       orders: {
         'GET /orders?seller=ID': 'Search orders by seller',
         'GET /orders/count?seller=ID': 'Get order count by seller'
+      },
+      users: {
+        'GET /users?user_id=ID&token=...': 'Get Mercado Libre user by id'
       }
     },
     status: config.clientId ? 'configured' : 'not configured'
@@ -31,6 +35,7 @@ fastify.get('/', async (request, reply) => {
 
 await fastify.register(authRoutes);
 await fastify.register(ordersRoutes);
+await fastify.register(usersRoutes);
 
 const start = async () => {
   try {
